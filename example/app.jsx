@@ -18,7 +18,7 @@ class App extends Component {
     return (
       <div>
         <button onClick={() => { this.setState({ value: '+1s', disabled: !disabled }); }}> +1s </button>
-        <Input value={value} disabled={disabled} onClick={() => { console.log('click'); }} />
+        <Input onChange={(e) => console.log(e)} value={value} disabled={disabled} onClick={() => { console.log('click'); }} />
       </div>
     );
   }

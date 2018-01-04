@@ -3,20 +3,33 @@ import PropTypes from 'prop-types';
 
 const nill = () => false;
 
-const KeyButton = ({ value, style = {}, disabled = false, className = '', onClick = nill }) => (
-  <input
-    type="button"
-    className={className ? `nb-key ${className}` : 'nb-key'}
-    value={value}
-    style={style}
-    onClick={onClick}
-    disabled={disabled}
-  />
+const KeyButton = ({ value, style = {}, icon, disabled = false, className = '', onClick = nill }) => (
+  icon ? (
+    <button
+      className={className ? `nb-key ${className}` : 'nb-key'}
+      value={value}
+      style={style}
+      onClick={onClick}
+      disabled={disabled}
+    >
+      <i className={`icon ${icon}`} />
+    </button>
+  ) : (
+    <input
+      type="button"
+      className={className ? `nb-key ${className}` : 'nb-key'}
+      value={value}
+      style={style}
+      onClick={onClick}
+      disabled={disabled}
+    />
+  )
 );
 
 KeyButton.defaultProps = {
   value: '',
   style: {},
+  icon: '',
   disabled: false,
   className: '',
   onClick: nill,
@@ -25,6 +38,7 @@ KeyButton.defaultProps = {
 KeyButton.propTypes = {
   value: PropTypes.string,
   style: PropTypes.object,
+  icon: PropTypes.string,
   disabled: PropTypes.bool,
   className: PropTypes.string,
   onClick: PropTypes.func,

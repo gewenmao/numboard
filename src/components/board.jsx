@@ -83,7 +83,7 @@ export default class NumBoard extends Component {
         <div className="nb-box__control">
           <KeyButton
             onClick={() => this.handleClickDeleteKey()}
-            value="<"
+            icon="icon-delete"
             className="nb-key__delete"
           />
           <KeyButton
