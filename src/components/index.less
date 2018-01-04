@@ -1,0 +1,90 @@
+.nb-box {
+    position: absolute;
+    padding: 16px 16px 8px 16px;
+    width: 296px;
+    height:286px;
+    background: #272D3A;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.50);
+    box-sizing: border-box;
+    vertical-align: middle;
+    outline: none;
+    z-index: 999999;
+
+    .nb-box__input {
+        display: inline-block;
+        width: 204px;
+        vertical-align: middle;
+    }
+
+    .nb-box__control {
+        display: inline-block;
+        width: 60px;
+        vertical-align: middle;
+    }
+
+    .nb-key {
+        padding: 0;
+        width: 60px;
+        height: 56px;
+        background-image: linear-gradient(-180deg, #4D535E 0%, #404650 100%);
+        box-shadow: 0 1px 4px 0 rgba(0,0,0,0.40);
+        border-radius: 2px;
+        border: none;
+        outline: none;
+        color: #FFFFFF;
+
+        &:hover {
+            background-image: linear-gradient(-180deg, #70767E 0%, #666B73 100%);
+            box-shadow: 0 2px 6px 0 rgba(0,0,0,0.40);
+            border-radius: 2px;
+        }
+
+        &:active {
+            background-image: linear-gradient(-180deg, #494F58 0%, #3E444D 100%);
+            box-shadow: 0 1px 2px 0 rgba(0,0,0,0.40);
+            border-radius: 2px;
+        }
+
+        &:disabled {
+            background-image: linear-gradient(-180deg, #F1F1F1 1%, #DCDCDC 99%);
+            box-shadow: 0 1px 4px 0 rgba(0,0,0,0.40);
+            border-radius: 2px;
+            color: #999999;
+        }
+
+        &__number {
+            margin: 0 8px 10px 0;
+            font-size: 28px;
+            line-height: 27px;
+        }
+
+        &__delete, &__clear, &__close {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            color: #FFFFFF;
+            line-height: 27px;
+        }
+
+        &__clear {
+            height: 122px;
+        }
+
+        &__close {
+            background-image: linear-gradient(-180deg, #3287EA 0%, #0E69D2 100%);
+            box-shadow: 0 1px 4px 0 rgba(0,0,0,0.40);
+            border-radius: 2px;
+
+            &:hover {
+                background-image: linear-gradient(-180deg, #5CA0EE 0%, #3E87DA 100%);
+                box-shadow: 0 2px 6px 0 rgba(0,0,0,0.40);
+                border-radius: 2px;
+            }
+
+            &:active {
+                background-image: linear-gradient(-180deg, #2E7AD3 0%, #0C5EBB 100%);
+                box-shadow: 0 1px 2px 0 rgba(0,0,0,0.40);
+                border-radius: 2px;
+            }
+        }
+    }
+}
