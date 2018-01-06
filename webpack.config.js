@@ -21,7 +21,7 @@ module.exports = {
       exclude: /node_modules/,
       query: {
         presets: [['es2015', { modules: false }], 'stage-0', 'react'],
-        plugins: ['react-hot-loader/babel'],
+        plugins: ['transform-decorators-legacy', 'react-hot-loader/babel'],
       },
     }, {
       test: /\.less$/,

@@ -5,15 +5,19 @@ import NumBoard from './board';
 
 const nill = () => false;
 
-function showNumBoard(props = {}) {
+function show(props = {}) {
   const div = document.createElement('div');
   document.body.appendChild(div);
 
   function remove() {
     const unmountResult = ReactDOM.unmountComponentAtNode(div);
+    const { onClose = nill } = props;
+
     if (unmountResult && div.parentNode) {
       div.parentNode.removeChild(div);
     }
+
+    onClose();
   }
 
   ReactDOM.render(
@@ -66,14 +70,12 @@ const create = Input => class Wrapper extends Component {
   static defaultProps = {
     onClick: nill,
     onChange: nill,
-    value: '',
     disabled: false,
   }
 
   static propTypes = {
     onClick: PropTypes.func,
     onChange: PropTypes.func,
-    value: PropTypes.string,
     disabled: PropTypes.bool,
   }
 
@@ -85,8 +87,17 @@ const create = Input => class Wrapper extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { value } = nextProps;
-    this.setState({ value });
+    if ('value' in nextProps) {
+      const value = nextProps.value;
+      this.setState({ value });
+    }
+  }
+
+  triggerChange = (changedValue) => {
+    const onChange = this.props.onChange;
+    if (onChange) {
+      onChange(changedValue);
+    }
   }
 
   onClick() {
@@ -95,12 +106,11 @@ const create = Input => class Wrapper extends Component {
     const { top, left } = calculate(position);
 
     if (!this.props.disabled) {
-      showNumBoard({
+      show({
         style: {
           top, left,
         },
         value: this.state.value,
-        onInput: (value) => { this.onInput(value); },
         onInputNum: (value) => { this.onInputNum(value); },
         onDeleteNum: () => { this.onDeleteNum(); },
         onClearNum: () => { this.onClearNum(); },
@@ -110,36 +120,34 @@ const create = Input => class Wrapper extends Component {
     this.props.onClick();
   }
 
-  onInput(value) {
-    this.props.onChange({
-      target: { value },
-    });
-  }
-
-  onInputNum(num) {
+  onInputNum = (num) => {
     const { value = '' } = this.state;
     const newValue = value + num;
     this.setState({ value: newValue });
-    this.onInput(newValue);
+    this.triggerChange(newValue);
   }
 
-  onDeleteNum() {
+  onDeleteNum = () => {
     const { value = '' } = this.state;
     if (value.length > 0) {
       const newValue = value.slice(0, value.length - 1);
       this.setState({ value: newValue });
-      this.onInput(newValue);
+      this.triggerChange(newValue);
     }
   }
 
-  onClearNum() {
+  onClearNum = () => {
     this.setState({ value: '' });
-    this.onInput('');
+    this.triggerChange('');
   }
 
   onChange(e) {
-    this.setState({ value: e.target.value });
-    this.props.onChange(e);
+    const value = e.target ? e.target.value : e;
+    if (!('value' in this.props)) {
+      this.setState({ value });
+    }
+
+    this.props.onChange(value);
   }
 
   render() {
@@ -156,7 +164,7 @@ const create = Input => class Wrapper extends Component {
 };
 
 module.exports = {
-  showNumBoard,
   NumBoard,
+  show,
   create,
 };
