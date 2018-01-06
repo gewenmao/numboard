@@ -58,7 +58,7 @@ class CashForm extends Component {
             </FormItem>
           </Col>
           <Col span={18}>
-            <Button type="primary" htmlType="submit" size="min">确 认</Button>
+            <Button type="primary" htmlType="submit" size="small">确 认</Button>
           </Col>
         </Row>
       </Form>
