@@ -128,9 +128,15 @@ const create = Input => class Wrapper extends Component {
   }
 
   onDeleteNum = () => {
-    const { value = '' } = this.state;
-    if (value.length > 0) {
-      const newValue = value.slice(0, value.length - 1);
+    const { value } = this.state;
+    if (value == null) {
+      return;
+    }
+
+    const val = value.toString();
+
+    if (val.length > 0) {
+      const newValue = val.slice(0, val.length - 1);
       this.setState({ value: newValue });
       this.triggerChange(newValue);
     }

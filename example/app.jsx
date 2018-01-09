@@ -70,7 +70,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '1',
+      value: 0,
       disabled: false,
     };
   }
@@ -88,14 +88,14 @@ class App extends Component {
         <Row>
           <Col span={12}>
             <NumInput
-              onChange={(value) => { this.setState({value}); console.log('change');}}
+              onChange={(val) => { this.setState({ value: val }); console.log('change'); }}
               value={value}
               disabled={disabled}
               onClick={() => { console.log('click'); }}
             />
           </Col>
           <Col span={12}>
-             <Button onClick={() => { this.setState({ value: '+1s', disabled: !disabled }); }}> disabled </Button>
+            <Button onClick={() => { this.setState({ value: '+1s', disabled: !disabled }); }}> disabled </Button>
           </Col>
         </Row>
       </div>
