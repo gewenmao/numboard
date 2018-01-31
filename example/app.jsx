@@ -72,14 +72,18 @@ class App extends Component {
     this.state = {
       value: 0,
       disabled: false,
+      show: true,
     };
+  }
+  componentDidMount() {
+    setTimeout(() => this.setState({ show: false }), 5000);
   }
 
   render() {
-    const { value, disabled } = this.state;
+    const { value, disabled, show } = this.state;
     return (
       <div>
-
+        { show ? <NumInput /> : null}
         <CashForm
           total={100}
           onSubmit={(values) => { console.log(values); }}

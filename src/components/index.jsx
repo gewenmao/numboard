@@ -20,7 +20,8 @@ function show(props = {}) {
     onClose();
   }
 
-  ReactDOM.render(
+
+  return ReactDOM.render(
     <NumBoard {...props} onClose={() => remove()} />
   , div);
 }
@@ -84,12 +85,19 @@ const create = Input => class Wrapper extends Component {
     this.state = {
       value: props.value,
     };
+    this.numBoard = null;
   }
 
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       const value = nextProps.value;
       this.setState({ value });
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.numBoard && this.numBoard.props) {
+      this.numBoard.props.onClose();
     }
   }
 
@@ -106,7 +114,7 @@ const create = Input => class Wrapper extends Component {
     const { top, left } = calculate(position);
 
     if (!this.props.disabled) {
-      show({
+      this.numBoard = show({
         style: {
           top, left,
         },
