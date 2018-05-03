@@ -72,11 +72,13 @@ const create = Input => class Wrapper extends Component {
     onClick: nill,
     onChange: nill,
     disabled: false,
+    onKeyPress: nill,
   }
 
   static propTypes = {
     onClick: PropTypes.func,
     onChange: PropTypes.func,
+    onKeyPress: PropTypes.func,
     disabled: PropTypes.bool,
   }
 
@@ -164,6 +166,14 @@ const create = Input => class Wrapper extends Component {
     this.props.onChange(value);
   }
 
+  onKeyPress = (e) => {
+    const { onKeyPress = nill } = this.props;
+    if (e.key === 'Enter') {
+      this.numBoard.props.onClose();
+    }
+    onKeyPress(e);
+  }
+
   render() {
     return (
       <Input
@@ -172,6 +182,7 @@ const create = Input => class Wrapper extends Component {
         onChange={e => this.onChange(e)}
         ref={(input) => { this.numInput = input; }}
         value={this.state.value}
+        onKeyPress={e => this.onKeyPress(e)}
       />
     );
   }
