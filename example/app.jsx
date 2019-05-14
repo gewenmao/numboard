@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Row, Col } from 'antd';
+import { Form, Input, Button, Row, Col, InputNumber, DatePicker } from 'antd';
 import Wrap from '../src/index';
 import './style.less';
 
@@ -72,32 +72,63 @@ class App extends Component {
     this.state = {
       value: 0,
       disabled: false,
+      show: true,
     };
+  }
+  componentDidMount() {
+    setTimeout(() => this.setState({ show: false }), 10000);
   }
 
   render() {
-    const { value, disabled } = this.state;
+    const { value, disabled, show } = this.state;
     return (
       <div>
-
-        <CashForm
-          total={100}
-          onSubmit={(values) => { console.log(values); }}
-        />
-
-        <Row>
-          <Col span={12}>
-            <NumInput
-              onChange={(val) => { this.setState({ value: val }); console.log('change'); }}
-              value={value}
-              disabled={disabled}
-              onClick={() => { console.log('click'); }}
-            />
-          </Col>
-          <Col span={12}>
-            <Button onClick={() => { this.setState({ value: '+1s', disabled: !disabled }); }}> disabled </Button>
-          </Col>
-        </Row>
+        <div>
+          示例一：10s 后输入框消失
+          { show ? <NumInput /> : null}
+        </div>
+        <div>
+          示例二：Ant Design Form 表单
+          <CashForm
+            total={100}
+            onSubmit={(values) => { console.log(values); }}
+          />
+        </div>
+        <div>
+          示例三：输入框 disabled
+          <Row>
+            <Col span={12}>
+              <NumInput
+                onChange={(val) => { this.setState({ value: val }); console.log('change'); }}
+                value={value}
+                disabled={disabled}
+                onClick={() => { console.log('click'); }}
+              />
+            </Col>
+            <Col span={12}>
+              <Button onClick={() => { this.setState({ value: '0', disabled: !disabled }); }}> disabled </Button>
+            </Col>
+          </Row>
+        </div>
+        <div
+          ref={(node) => { this.wrapRef = node; }}
+          style={{
+            height: '200px',
+            overflow: 'auto',
+            position: 'relative',
+          }}
+        >
+          <div style={{ height: '1024px' }}>
+            示例四：数字键盘绑定在内部
+            <div>
+              <NumInput getContainer={() => this.wrapRef} />
+            </div>
+            示例五：数字键盘绑定在外部
+            <div>
+              <NumInput />
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

@@ -12,9 +12,8 @@ function render(Component) {
   ReactDOM.render(
     <AppContainer>
       <div>
-        <div style={{'height': '1024px'}} />
         <App />
-        <div style={{'height': '0'}} />
+        <div style={{'height': '800px'}} />
       </div>
 
     </AppContainer>, div

@@ -93,7 +93,7 @@ export default class NumBoard extends Component {
           />
           <KeyButton
             onClick={() => this.handleClickCloseKey()}
-            value="关闭"
+            value="确定"
             className="nb-key__close"
           />
         </div>
