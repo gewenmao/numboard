@@ -5,9 +5,9 @@ import NumBoard from './board';
 
 const nill = () => false;
 
-function show(props = {}) {
+function show(props = {}, container = window.body) {
   const div = document.createElement('div');
-  document.body.appendChild(div);
+  container.appendChild(div);
 
   function remove() {
     const unmountResult = ReactDOM.unmountComponentAtNode(div);
@@ -27,39 +27,17 @@ function show(props = {}) {
 }
 
 
-function calculate(position) {
-  const dHeight = 8;
-  const dWidth = 8;
-  const boardHeight = 286;
-  const boardWidth = 296;
-  const { bottom, top, left, right } = position;
+function calculate(domNode, container) {
+  const dPosition = domNode.getBoundingClientRect();
+  const cPosition = container.getBoundingClientRect();
 
-  const bodyWidth = document.body.clientWidth;
-  const bodyHeight = document.body.clientHeight;
-  const scrollTop = window.scrollY;
-  const scrollLeft = window.scrollX;
+  const { bottom: dBottom, left: dLeft } = dPosition;
+  const { top: cTop, left: cLeft } = cPosition;
 
-  const canBottom = scrollTop + (bottom + boardHeight) < bodyHeight;
-  const canLeft = scrollLeft + (left + boardWidth) < bodyWidth;
-  const canRight = scrollLeft + (right + boardWidth) < bodyWidth;
-  const canTop = scrollTop + (top - boardHeight) > 0;
+  const dHeight = 4;
 
-  let boardLeft;
-  let boardTop;
-
-  if (canBottom) {
-    boardTop = scrollTop + bottom + dHeight;
-    boardLeft = canLeft ? scrollLeft + left : bodyWidth - boardWidth;
-  } else if (canRight) {
-    boardTop = bodyHeight - boardHeight;
-    boardLeft = scrollLeft + right + dWidth;
-  } else if (canTop) {
-    boardTop = scrollTop + (top - boardHeight - dHeight);
-    boardLeft = canLeft ? scrollLeft + left : bodyWidth - boardWidth;
-  } else {
-    boardTop = scrollTop + bottom + dHeight;
-    boardLeft = scrollLeft + left;
-  }
+  const boardTop = (dBottom - cTop) + dHeight;
+  const boardLeft = dLeft - cLeft;
 
   return {
     top: boardTop,
@@ -73,6 +51,7 @@ const create = Input => class Wrapper extends Component {
     onChange: nill,
     disabled: false,
     onKeyPress: nill,
+    getContainer: () => document.body,
   }
 
   static propTypes = {
@@ -80,6 +59,7 @@ const create = Input => class Wrapper extends Component {
     onChange: PropTypes.func,
     onKeyPress: PropTypes.func,
     disabled: PropTypes.bool,
+    getContainer: PropTypes.func,
   }
 
   constructor(props) {
@@ -112,8 +92,8 @@ const create = Input => class Wrapper extends Component {
 
   onClick() {
     const domNode = ReactDOM.findDOMNode(this.numInput);
-    const position = domNode.getBoundingClientRect();
-    const { top, left } = calculate(position);
+    const container = this.props.getContainer();
+    const { top, left } = calculate(domNode, container);
 
     if (!this.props.disabled) {
       this.numBoard = show({
@@ -124,7 +104,7 @@ const create = Input => class Wrapper extends Component {
         onInputNum: (value) => { this.onInputNum(value); },
         onDeleteNum: () => { this.onDeleteNum(); },
         onClearNum: () => { this.onClearNum(); },
-      });
+      }, container);
     }
 
     this.props.onClick();
@@ -175,9 +155,10 @@ const create = Input => class Wrapper extends Component {
   }
 
   render() {
+    const { getContainer, ...restProps } = this.props;
     return (
       <Input
-        {...this.props}
+        {...restProps}
         onClick={() => this.onClick()}
         onChange={e => this.onChange(e)}
         ref={(input) => { this.numInput = input; }}
