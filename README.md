@@ -1,5 +1,7 @@
 ## Install
 
+模拟数字键盘
+
 ```sh
 npm install react-numboard --save
 ```
@@ -8,11 +10,18 @@ npm install react-numboard --save
 
 ```jsx
 import NumBoard from 'react-numboard';
-const NumInput = NumBoard.create('input');
 
+const NumInput = NumBoard.create('input');
 const Count = (props) => (<NumInput {...props} />)
 ```
 
+```jsx
+import { Input } from 'antd';
+import NumBoard from 'react-numboard';
+
+const NumInput = NumBoard.create(Input);
+const Count = (props) => (<NumInput {...props} />)
+```
 
 ## Demo
 
