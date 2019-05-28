@@ -21,9 +21,7 @@ function show(props = {}, container = window.body) {
   }
 
 
-  return ReactDOM.render(
-    <NumBoard {...props} onClose={() => remove()} />
-  , div);
+  ReactDOM.render(<NumBoard {...props} onClose={() => remove()} />, div);
 }
 
 
@@ -60,21 +58,16 @@ const create = Input => class Wrapper extends Component {
     onKeyPress: PropTypes.func,
     disabled: PropTypes.bool,
     getContainer: PropTypes.func,
+    // eslint-disable-next-line react/require-default-props
+    value: PropTypes.string,
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      value: props.value,
+      value: '',
     };
     this.numBoard = null;
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if ('value' in nextProps) {
-      const value = nextProps.value;
-      this.setState({ value });
-    }
   }
 
   componentWillUnmount() {
@@ -83,42 +76,37 @@ const create = Input => class Wrapper extends Component {
     }
   }
 
-  triggerChange = (changedValue) => {
-    const onChange = this.props.onChange;
-    if (onChange) {
-      onChange(changedValue);
-    }
-  }
-
   onClick() {
+    // eslint-disable-next-line react/no-find-dom-node
     const domNode = ReactDOM.findDOMNode(this.numInput);
-    const container = this.props.getContainer();
+    const { getContainer, disabled, onClick } = this.props;
+    const container = getContainer();
     const { top, left } = calculate(domNode, container);
+    const value = this.getValue();
 
-    if (!this.props.disabled) {
+    if (!disabled) {
       this.numBoard = show({
         style: {
           top, left,
         },
-        value: this.state.value,
-        onInputNum: (value) => { this.onInputNum(value); },
+        value,
+        onInputNum: (num) => { this.onInputNum(num); },
         onDeleteNum: () => { this.onDeleteNum(); },
         onClearNum: () => { this.onClearNum(); },
       }, container);
     }
 
-    this.props.onClick();
+    onClick();
   }
 
   onInputNum = (num) => {
-    const { value = '' } = this.state;
+    const value = this.getValue();
     const newValue = value + num;
-    this.setState({ value: newValue });
-    this.triggerChange(newValue);
+    this.setValue(newValue);
   }
 
   onDeleteNum = () => {
-    const { value } = this.state;
+    const value = this.getValue();
     if (value == null) {
       return;
     }
@@ -127,23 +115,40 @@ const create = Input => class Wrapper extends Component {
 
     if (val.length > 0) {
       const newValue = val.slice(0, val.length - 1);
-      this.setState({ value: newValue });
-      this.triggerChange(newValue);
+      this.setValue(newValue);
     }
   }
 
   onClearNum = () => {
-    this.setState({ value: '' });
-    this.triggerChange('');
+    const newValue = '';
+    this.setValue(newValue);
   }
 
   onChange(e) {
     const value = e.target ? e.target.value : e;
+    this.setValue(value);
+  }
+
+  getValue() {
+    let { value } = this.state;
+    if ('value' in this.props) {
+      ({ value } = this.props);
+    }
+    return value;
+  }
+
+  setValue(value) {
     if (!('value' in this.props)) {
       this.setState({ value });
     }
+    this.triggerChange(value);
+  }
 
-    this.props.onChange(value);
+  triggerChange = (changedValue) => {
+    const { onChange } = this.props;
+    if (onChange) {
+      onChange(changedValue);
+    }
   }
 
   onKeyPress = (e) => {
@@ -156,20 +161,22 @@ const create = Input => class Wrapper extends Component {
 
   render() {
     const { getContainer, ...restProps } = this.props;
+    const value = this.getValue();
+
     return (
       <Input
+        value={value}
         {...restProps}
         onClick={() => this.onClick()}
         onChange={e => this.onChange(e)}
         ref={(input) => { this.numInput = input; }}
-        value={this.state.value}
         onKeyPress={e => this.onKeyPress(e)}
       />
     );
   }
 };
 
-module.exports = {
+export default {
   NumBoard,
   show,
   create,

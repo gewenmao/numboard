@@ -14,7 +14,7 @@ export default class NumBoard extends Component {
   }
 
   static propTypes = {
-    style: PropTypes.object,
+    style: PropTypes.objectOf(Object),
     onClearNum: PropTypes.func,
     onInputNum: PropTypes.func,
     onDeleteNum: PropTypes.func,
@@ -35,24 +35,29 @@ export default class NumBoard extends Component {
   }
 
   handleClickInputKey(num) {
-    this.props.onInputNum(num);
+    const { onInputNum } = this.props;
+    onInputNum(num);
   }
 
   handleClickDeleteKey() {
-    this.props.onDeleteNum();
+    const { onDeleteNum } = this.props;
+    onDeleteNum();
   }
 
   handleClickClearKey() {
-    this.props.onClearNum();
+    const { onClearNum } = this.props;
+    onClearNum();
   }
 
   handleClickCloseKey() {
-    this.props.onClose();
+    const { onClose } = this.props;
+    onClose();
   }
 
   handleClick(e) {
+    const { onClose } = this.props;
     if (!this.nbBox.contains(e.target)) {
-      this.props.onClose();
+      onClose();
     }
   }
 

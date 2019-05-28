@@ -3,9 +3,12 @@ import PropTypes from 'prop-types';
 
 const nill = () => false;
 
-const KeyButton = ({ value, style = {}, icon, disabled = false, className = '', onClick = nill }) => (
+const KeyButton = ({
+  value, style = {}, icon, disabled = false, className = '', onClick = nill,
+}) => (
   icon ? (
     <button
+      type="button"
       className={className ? `nb-key ${className}` : 'nb-key'}
       value={value}
       style={style}
@@ -37,7 +40,7 @@ KeyButton.defaultProps = {
 
 KeyButton.propTypes = {
   value: PropTypes.string,
-  style: PropTypes.object,
+  style: PropTypes.objectOf(Object),
   icon: PropTypes.string,
   disabled: PropTypes.bool,
   className: PropTypes.string,
