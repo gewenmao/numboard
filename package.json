@@ -1,6 +1,6 @@
 {
   "name": "react-numboard",
-  "version": "1.0.8",
+  "version": "2.0.0",
   "description": "react number keyboard",
   "main": "./lib/index.js",
   "dependencies": {
